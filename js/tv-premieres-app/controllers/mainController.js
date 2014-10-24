@@ -1,6 +1,7 @@
 app.controller("mainController", function($scope, $http){
     var apiKey = "43232be0b3972a27cbd7cf7208225b9f";
     $scope.init = function() {
+
         //API requires a start date
         var today = new Date();
         //analyse the result
@@ -48,12 +49,15 @@ app.controller("mainController", function($scope, $http){
         });
 
     };
-
+    $scope.setGenreFilter = function (genre) {
+        console.log(genre);
+        $scope.genreFilter = genre;
+    }
 });
 app.filter('isGenre', function() {
     return function(input, genre) {
-        console.log(input);
-        console.log(genre);
+//        console.log(input);
+//        console.log(genre);
         if (typeof genre == 'undefined' || genre == null) {
             return input;
         } else {
