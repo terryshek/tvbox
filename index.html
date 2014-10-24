@@ -26,12 +26,18 @@
             <select ng-model="genreFilter" ng-options="label for label in availableGenres">
                 <option value="">All</option>
             </select>
-		</div>
+            <label>Order by: </label>
+            <select ng-model="orderField" ng-options="label for label in orderFields" class="input-medium"></select>
+            <select ng-model="orderReverse" ng-options="label for label in orderDirections" class="input-medium">
+                <!--<option value="true">Descending</option>-->
+                <!--<option value="false">Ascending</option>-->
+            </select>
+        </div>
         <div class="results-top"></div>
         <div class="results-container">
             <ul class="episode-list">
-                <li ng-repeat="tvshow in results | filter:filterText | isGenre:genreFilter">
-                    <div class="row-fluid">
+                <li ng-repeat="tvshow in results | filter: filterText | isGenre:genreFilter | orderBy:customOrder:orderReverse">
+                <div class="row-fluid">
                         <div class="span3">
                             <img src="{{tvshow.episode.images.screen}}" />
                             <div class="ratings"><strong>Ratings:</strong> <span class="label"><i class="icon-thumbs-up"></i> {{tvshow.episode.ratings.loved}}</span> <span class="label"><i class="icon-thumbs-down"></i> {{tvshow.episode.ratings.hated}}</span> <span class="label label-important" ng-class="{'label-success': tvshow.episode.ratings.percentage >= 50}"><strong>%</strong> {{tvshow.episode.ratings.percentage}}</div>

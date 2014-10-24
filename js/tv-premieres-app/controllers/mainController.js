@@ -1,7 +1,12 @@
 app.controller("mainController", function($scope, $http){
     var apiKey = "43232be0b3972a27cbd7cf7208225b9f";
     $scope.init = function() {
+        $scope.orderFields = ["Air Date", "Rating"];
+        $scope.orderDirections = ["Descending", "Ascending"];
+        $scope.orderField = "Air Date"; //Default order field
+        $scope.orderReverse = "Descending"; //Default order field
 
+        $scope.orderReverse = false;
         //API requires a start date
         var today = new Date();
         //analyse the result
@@ -53,6 +58,16 @@ app.controller("mainController", function($scope, $http){
         console.log(genre);
         $scope.genreFilter = genre;
     }
+    $scope.customOrder = function (tvshow) {
+        switch ($scope.orderField) {
+            case "Air Date":
+                return tvshow.episode.first_aired;
+                break;
+            case "Rating":
+                return tvshow.episode.ratings.percentage;
+                break;
+        }
+    };
 });
 app.filter('isGenre', function() {
     return function(input, genre) {
