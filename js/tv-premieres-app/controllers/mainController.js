@@ -1,10 +1,11 @@
-app.controller("mainController", function($scope, $http){
-    var apiKey = "43232be0b3972a27cbd7cf7208225b9f";
+app.controller("mainController", function ($scope, $http, ngDialog) {
+
     $scope.init = function() {
+        var apiKey = "43232be0b3972a27cbd7cf7208225b9f";
         $scope.orderFields = ["Air Date", "Rating"];
         $scope.orderDirections = ["Descending", "Ascending"];
         $scope.orderField = "Air Date"; //Default order field
-        $scope.orderReverse = "Descending"; //Default order field
+        $scope.orderReverse = false;
 
         $scope.orderReverse = false;
         //API requires a start date
@@ -20,7 +21,10 @@ app.controller("mainController", function($scope, $http){
         //Create the date string and ensure leading zeros if required
         var apiDate = today.getFullYear() + ("0" + (today.getMonth() + 1)).slice(-2) + "" + ("0" + today.getDate()).slice(-2);
         console.log(apiDate)
-        var responseData = function(){return $http.jsonp('http://api.trakt.tv/calendar/premieres.json/' + apiKey + '/' + apiDate + '/' + 30 + '/?callback=JSON_CALLBACK')};
+
+        var responseData = function () {
+            return $http.jsonp('http://api.trakt.tv/calendar/premieres.json/' + apiKey + '/' + apiDate + '/' + 30 + '/?callback=JSON_CALLBACK')
+        };
         responseData(apiKey).then(function(response) {
             console.log(response.data);
             //For each day, get all the episodes
@@ -68,6 +72,17 @@ app.controller("mainController", function($scope, $http){
                 break;
         }
     };
+    $scope.showDialog = function (obj) {
+        console.log(obj)
+        ngDialog.open({
+            template: 'popupTmpl.html',
+            controller: ['$scope', function ($scope) {
+                // controller logic
+                $scope.show = obj
+                console.log($scope.show)
+            }]
+        });
+    }
 });
 app.filter('isGenre', function() {
     return function(input, genre) {
